@@ -1,14 +1,18 @@
-# Stage 1: build với Gradle + JDK 21
+# Stage 1: Build với Gradle + JDK 21
 FROM gradle:jdk21 AS builder
 WORKDIR /home/gradle/project
 
-COPY gradlew gradlew.bat gradle/gradle-wrapper.properties build.gradle.kts settings.gradle.kts ./
+# Copy Gradle wrapper & cấu hình
+COPY gradlew gradlew.bat ./
+COPY gradle ./gradle
+COPY build.gradle.kts settings.gradle.kts ./
 RUN chmod +x gradlew
 
+# Copy source & build jar
 COPY src ./src
 RUN ./gradlew clean bootJar -x test
 
-# Stage 2: runtime với Temurin JRE 21 trên Alpine
+# Stage 2: Runtime với Temurin JRE 21 trên Alpine
 FROM eclipse-temurin:21-jre-alpine AS runtime
 WORKDIR /app
 

@@ -11,7 +11,7 @@ COPY src ./src
 RUN ./gradlew clean bootJar -x test
 
 # ── Stage 2: Runtime với JRE 21 Nhẹ ──────────────────────────────
-FROM eclipse-temurin:21-jre-focal
+FROM eclipse-temurin:21-jre AS runtime
 WORKDIR /app
 
 # Copy artifact từ builder
